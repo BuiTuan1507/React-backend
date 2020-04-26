@@ -6,7 +6,7 @@ var logger = require('morgan');
 var cors = require('cors');
 var bodyParser = require('body-parser');
 var indexRouter = require('./routes/index');
-
+var session =  require('express-session');
 
 var app = express();
 var Users = require('./routes/Users');
@@ -25,6 +25,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
 app.use('/', indexRouter);
 app.use('/users', Users);
+app.set('trust proxy', 1) // trust first proxy
+app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { maxAge:1000*60*60 }
+}))
 app.use(
   bodyParser.urlencoded({
     extended:false

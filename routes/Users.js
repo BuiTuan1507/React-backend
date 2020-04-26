@@ -9,6 +9,7 @@ users.use(cors())
 
 process.env.SECRET_KEY = 'secret'
 
+
 users.post('/register', (req, res) => {
   const today = new Date()
   const userData = {
@@ -16,6 +17,7 @@ users.post('/register', (req, res) => {
     last_name: req.body.last_name,
     email: req.body.email,
     password: req.body.password,
+    
     created: today
   }
 
@@ -84,5 +86,30 @@ users.get('/profile', (req, res) => {
       res.send('error: ' + err)
     })
 })
-
+users.post('/thanhtoan',(req,res) => {
+  User.update({
+    money : req.body.money
+  },{
+    where:{
+      email: req.body.email
+    },
+    returning: true, 
+    plain: true
+  })
+  User.findOne({
+    where:{
+      email: req.body.email
+    }
+  })
+    .then(user => {
+      if (user) {
+        res.json(user);
+      } else {
+        res.send('User does not exist')
+      }
+    })
+    .catch(err => {
+      res.send('error: ' + err)
+    })
+})
 module.exports = users

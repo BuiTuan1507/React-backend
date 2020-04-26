@@ -21,6 +21,9 @@ module.exports = db.sequelize.define(
     password: {
       type: Sequelize.STRING
     },
+    money: {
+      type:Sequelize.INTEGER
+    },
     created: {
       type: Sequelize.DATE,
       defaultValue: Sequelize.NOW
